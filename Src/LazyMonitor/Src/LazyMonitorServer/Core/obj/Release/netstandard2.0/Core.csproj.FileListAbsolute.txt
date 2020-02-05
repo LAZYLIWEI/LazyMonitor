@@ -1,0 +1,7 @@
+E:\github\LazyMonitor\Src\LazyMonitorServer\Core\bin\Release\netstandard2.0\Core.deps.json
+E:\github\LazyMonitor\Src\LazyMonitorServer\Core\bin\Release\netstandard2.0\Core.dll
+E:\github\LazyMonitor\Src\LazyMonitorServer\Core\bin\Release\netstandard2.0\Core.pdb
+E:\github\LazyMonitor\Src\LazyMonitorServer\Core\obj\Release\netstandard2.0\Core.AssemblyInfoInputs.cache
+E:\github\LazyMonitor\Src\LazyMonitorServer\Core\obj\Release\netstandard2.0\Core.AssemblyInfo.cs
+E:\github\LazyMonitor\Src\LazyMonitorServer\Core\obj\Release\netstandard2.0\Core.dll
+E:\github\LazyMonitor\Src\LazyMonitorServer\Core\obj\Release\netstandard2.0\Core.pdb

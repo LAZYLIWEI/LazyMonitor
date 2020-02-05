@@ -1,0 +1,6 @@
+﻿  Building 'LazyMonitorDefense' with toolset 'WindowsKernelModeDriver10.0' and the 'Desktop' target platform.
+  driver.c
+  main.c
+  ssdt.c
+  正在生成代码...
+  LazyMonitorDefense.vcxproj -> E:\github\LazyMonitor\Src\LazyMonitorDefense\Debug\LazyMonitorDefense.sys
