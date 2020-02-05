@@ -6,16 +6,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\MyDriver.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hookssdt.h">
-      <Filter>src</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\MyDriver.c">
+    <ClCompile Include="src\Driver.c">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\main.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SSDT.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Driver.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SSDT.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

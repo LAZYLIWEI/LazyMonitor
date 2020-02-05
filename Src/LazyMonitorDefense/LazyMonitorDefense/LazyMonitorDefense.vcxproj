@@ -168,11 +168,13 @@
     <FilesToPackage Include="$(TargetPath)" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\hookssdt.h" />
-    <ClInclude Include="src\MyDriver.h" />
+    <ClCompile Include="src\Driver.c" />
+    <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\SSDT.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\MyDriver.c" />
+    <ClInclude Include="src\Driver.h" />
+    <ClInclude Include="src\SSDT.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
