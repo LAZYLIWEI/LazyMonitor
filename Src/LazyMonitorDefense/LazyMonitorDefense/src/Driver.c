@@ -6,7 +6,7 @@
 */
 static VOID 
 DriverUnload(PDRIVER_OBJECT pDriverObj) {
-	KdPrint(("Ð¶ÔØÇý¶¯"));
+
 	UNICODE_STRING strLinkname;
 	RtlInitUnicodeString(&strLinkname, LINK_NAME);
 	IoDeleteSymbolicLink(&strLinkname);
@@ -14,6 +14,7 @@ DriverUnload(PDRIVER_OBJECT pDriverObj) {
 
 	// »Ö¸´hook
 	Unhook();
+	KdPrint(("Ð¶ÔØÇý¶¯"));
 }
 
 

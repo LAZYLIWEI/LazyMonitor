@@ -42,26 +42,14 @@ ShowStuff0(LONG int32num) {
 * 修改KeBugCheckEx函数内容
 * newfun: 要执行的函数地址
 */
-//static
-//VOID FuckKeBugCheckEx(ULONGLONG newfun) {
-//	KIRQL irql;
-//	UCHAR jmp_code[] = "\xFF\x25\x00\x00\x00\x00\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF";
-//	memcpy(jmp_code + 6, &newfun, 8);
-//	irql = WPOFFx64();
-//	memset(KeBugCheckEx, 0x90, 15);
-//	memcpy(KeBugCheckEx, jmp_code, 14);
-//	WPONx64(irql);
-//}
-
 static
-VOID 
-FuckKeBugCheckEx(ULONGLONG newfun) {
+VOID FuckKeBugCheckEx(ULONGLONG newfun) {
 	KIRQL irql;
-	UCHAR jmp_code[] = "\x48\xB8\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x00\xFF\xE0";
-	memcpy(jmp_code + 2, &newfun, 8);
+	UCHAR jmp_code[] = "\xFF\x25\x00\x00\x00\x00\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF";
+	memcpy(jmp_code + 6, &newfun, 8);
 	irql = WPOFFx64();
 	memset(KeBugCheckEx, 0x90, 15);
-	memcpy(KeBugCheckEx, jmp_code, 12);
+	memcpy(KeBugCheckEx, jmp_code, 14);
 	WPONx64(irql);
 }
 

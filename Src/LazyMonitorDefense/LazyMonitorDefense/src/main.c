@@ -43,33 +43,62 @@
 //	DbgPrint("Fake_NtCreateFile called: %x", st);
 //	return st;
 //}
+NTSTATUS
+PsLookupProcessByProcessId(
+	__in HANDLE ProcessId,   //进程ID
+	__deref_out PEPROCESS* Process //返回的EPROCESS
+);
 
 NTKERNELAPI
 UCHAR*
 PsGetProcessImageFileName(PEPROCESS Process);
 
-typedef NTSTATUS(__fastcall* NTTERMINATEPROCESS)(IN HANDLE ProcessHandle, IN NTSTATUS ExitStatus);
+//typedef NTSTATUS(__fastcall* NTTERMINATEPROCESS)(IN HANDLE ProcessHandle, IN NTSTATUS ExitStatus);
+//
+//NTSTATUS __fastcall Fake_NtTerminateProcess(IN HANDLE ProcessHandle, IN NTSTATUS ExitStatus)
+//{
+//	PEPROCESS Process;
+//	NTSTATUS st = ObReferenceObjectByHandle(ProcessHandle, 0, *PsProcessType, KernelMode, &Process, NULL);
+//	if (NT_SUCCESS(st))
+//	{
+//		DbgPrint(PsGetProcessImageFileName(Process));
+//		if (!_stricmp(PsGetProcessImageFileName(Process), "lservice.exe")) {
+//			DbgPrint(("NtTerminateProcess STATUS_ACCESS_DENIED!"));
+//			return STATUS_ACCESS_DENIED;
+//		}
+//	}
+//
+//	DbgPrint(("NtTerminateProcess called!"));
+//	NTTERMINATEPROCESS NtTerminateProcess = (NTTERMINATEPROCESS)GetInstance()->oldFunc;
+//	return NtTerminateProcess(ProcessHandle, ExitStatus);
+//}
 
-NTSTATUS __fastcall Fake_NtTerminateProcess(IN HANDLE ProcessHandle, IN NTSTATUS ExitStatus)
-{
+
+//定义NTOPENPROCESS  
+typedef NTSTATUS(__stdcall* NTOPENPROCESS)(OUT PHANDLE  ProcessHandle,
+	IN ACCESS_MASK  DesiredAccess,
+	IN POBJECT_ATTRIBUTES  ObjectAttributes,
+	IN OPTIONAL PCLIENT_ID  ClientId);
+
+NTSTATUS __stdcall Fake_NtOpenProcess(OUT PHANDLE ProcessHandle,
+    IN ACCESS_MASK  DesiredAccess,
+    IN POBJECT_ATTRIBUTES  ObjectAttributes,
+    IN OPTIONAL PCLIENT_ID  ClientId) {
 	PEPROCESS Process;
-	NTSTATUS st = ObReferenceObjectByHandle(ProcessHandle, 0, *PsProcessType, KernelMode, &Process, NULL);
-	if (NT_SUCCESS(st))
-	{
-		if (!_stricmp(PsGetProcessImageFileName(Process), "lazy_service.exe")) {
-			KdPrint(("NtTerminateProcess STATUS_ACCESS_DENIED!"));
+	NTSTATUS st = PsLookupProcessByProcessId(ClientId->UniqueProcess, &Process);
+	if (NT_SUCCESS(st)) {
+		KdPrint((PsGetProcessImageFileName(Process)));
+		if (!_stricmp(PsGetProcessImageFileName(Process), "lmonitor.exe")) {
+			KdPrint(("NtOpenProcess STATUS_ACCESS_DENIED!"));
 			return STATUS_ACCESS_DENIED;
-		}
-		else {
-			KdPrint(("NtTerminateProcess called!"));
-			NTTERMINATEPROCESS NtTerminateProcess = (NTTERMINATEPROCESS)GetInstance()->oldFunc;
-			return NtTerminateProcess(ProcessHandle, ExitStatus);
 		}
 	}
 	else {
 		KdPrint(("ObReferenceObjectByHandle failed!"));
-		return STATUS_ACCESS_DENIED;
 	}
+
+	NTOPENPROCESS NtOpenProcess = (NTOPENPROCESS)GetInstance()->oldFunc;
+	return NtOpenProcess(ProcessHandle, DesiredAccess, ObjectAttributes, ClientId);
 }
 
 
@@ -91,7 +120,7 @@ DriverEntry(PDRIVER_OBJECT pDriverObj, PUNICODE_STRING pRegistryString) {
 
 	// hook
 	if (NT_SUCCESS(status)) {
-		Hook(41, (ULONGLONG)Fake_NtTerminateProcess);
+		Hook(35, (ULONGLONG)Fake_NtOpenProcess);
 	}
 
 	return status;
