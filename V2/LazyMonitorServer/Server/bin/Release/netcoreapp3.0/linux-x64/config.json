@@ -1,0 +1,24 @@
+{
+  "Base": { // 这个节点必填
+    "Version": "2.0", // 版本号
+    "Port": "30000", // 绑定端口号
+    "Heartbeat": "360", // 为0不开启心跳机制
+    "UploadDirectory": "/images", // 上传文件根目录
+    "EnableEmailNotify": true,
+    "EnableLog": true
+  },
+
+  "Log": {
+    "Name": "Logger", // 日志名
+    "ConfigFilename": "log4net.config", // 日志配置文件
+    "RepositoryName": "ServerRepository" // 日志仓储文件
+  },
+
+  "EmailNotify": {
+    "Name": "liwei@izhumeng.win", // 邮件名
+    "Address": "liwei@izhumeng.win", // 邮件地址
+    "Password": "M7OcoQtrKdRd3Qg7y1", // 邮件密码
+    "Host": "smtpdm.aliyun.com", // 邮件服务器地址
+    "Port": "80"
+  }
+}

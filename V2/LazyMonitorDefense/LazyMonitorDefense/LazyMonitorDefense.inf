@@ -1,0 +1,86 @@
+;
+; LazyMonitorDefense.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=Sample ; TODO: edit Class
+ClassGuid={78A1C341-4539-11d3-B88D-00C04FAD5171} ; TODO: edit ClassGuid
+Provider=%ManufacturerName%
+CatalogFile=LazyMonitorDefense.cat
+DriverVer= ; TODO: set DriverVer in stampinf property pages
+
+[DestinationDirs]
+DefaultDestDir = 12
+LazyMonitorDefense_Device_CoInstaller_CopyFiles = 11
+
+; ================= Class section =====================
+
+[ClassInstall32]
+Addreg=SampleClassReg
+
+[SampleClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-5
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+LazyMonitorDefense.sys  = 1,,
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NT$ARCH$
+
+[Standard.NT$ARCH$]
+%LazyMonitorDefense.DeviceDesc%=LazyMonitorDefense_Device, Root\LazyMonitorDefense ; TODO: edit hw-id
+
+[LazyMonitorDefense_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+LazyMonitorDefense.sys
+
+;-------------- Service installation
+[LazyMonitorDefense_Device.NT.Services]
+AddService = LazyMonitorDefense,%SPSVCINST_ASSOCSERVICE%, LazyMonitorDefense_Service_Inst
+
+; -------------- LazyMonitorDefense driver install sections
+[LazyMonitorDefense_Service_Inst]
+DisplayName    = %LazyMonitorDefense.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\LazyMonitorDefense.sys
+
+;
+;--- LazyMonitorDefense_Device Coinstaller installation ------
+;
+
+[LazyMonitorDefense_Device.NT.CoInstallers]
+AddReg=LazyMonitorDefense_Device_CoInstaller_AddReg
+CopyFiles=LazyMonitorDefense_Device_CoInstaller_CopyFiles
+
+[LazyMonitorDefense_Device_CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
+
+[LazyMonitorDefense_Device_CoInstaller_CopyFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
+
+[LazyMonitorDefense_Device.NT.Wdf]
+KmdfService =  LazyMonitorDefense, LazyMonitorDefense_wdfsect
+[LazyMonitorDefense_wdfsect]
+KmdfLibraryVersion = $KMDFVERSION$
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="<Your manufacturer name>" ;TODO: Replace with your manufacturer name
+ClassName="Samples" ; TODO: edit ClassName
+DiskName = "LazyMonitorDefense Installation Disk"
+LazyMonitorDefense.DeviceDesc = "LazyMonitorDefense Device"
+LazyMonitorDefense.SVCDESC = "LazyMonitorDefense Service"
